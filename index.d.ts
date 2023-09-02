@@ -185,7 +185,7 @@ export interface IFnAppOptions extends IOptions {
 }
 
 export interface IFnApp {
-  (options: IFnAppOptions): Promise<IAppItemFullDetail>
+  (options: IFnAppOptions, url: string): Promise<IAppItemFullDetail>
 }
 
 // -- list()
