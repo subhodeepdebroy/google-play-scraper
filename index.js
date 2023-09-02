@@ -1,29 +1,22 @@
-import * as R from 'ramda';
-import { constants } from './lib/constants.js';
-import memoizee from 'memoizee';
-import appMethod from './lib/app.js';
+'use strict';
 
-import list from './lib/list.js';
-import search from './lib/search.js';
-import suggest from './lib/suggest.js';
-import developer from './lib/developer.js';
-import reviews from './lib/reviews.js';
-import similar from './lib/similar.js';
-import permissions from './lib/permissions.js';
-import datasafety from './lib/datasafety.js';
-import categories from './lib/categories.js';
+const R = require('ramda');
+const constants = require('./lib/constants');
+const memoizee = require('memoizee');
+
+const appMethod = require('./lib/app');
 
 const methods = {
   app: appMethod,
-  list,
-  search: R.partial(search, [appMethod]),
-  suggest,
-  developer,
-  reviews,
-  similar,
-  permissions,
-  datasafety,
-  categories
+  list: require('./lib/list'),
+  search: R.partial(require('./lib/search'), [appMethod]),
+  suggest: require('./lib/suggest'),
+  developer: require('./lib/developer'),
+  reviews: require('./lib/reviews'),
+  similar: require('./lib/similar'),
+  permissions: require('./lib/permissions'),
+  datasafety: require('./lib/datasafety'),
+  categories: require('./lib/categories')
 };
 
 function memoized (opts) {
@@ -39,15 +32,15 @@ function memoized (opts) {
   const mAppMethod = memoizee(appMethod, cacheOpts);
 
   const otherMethods = {
-    list,
-    search: R.partial(search, [mAppMethod]),
-    suggest,
-    developer,
-    reviews,
-    similar,
-    permissions,
-    datasafety,
-    categories
+    list: require('./lib/list'),
+    search: R.partial(require('./lib/search'), [mAppMethod]),
+    suggest: require('./lib/suggest'),
+    developer: require('./lib/developer'),
+    reviews: require('./lib/reviews'),
+    similar: require('./lib/similar'),
+    permissions: require('./lib/permissions'),
+    datasafety: require('./lib/datasafety'),
+    categories: require('./lib/categories')
   };
 
   return Object.assign({ app: mAppMethod },
@@ -55,4 +48,4 @@ function memoized (opts) {
     R.map(doMemoize, otherMethods));
 }
 
-export default Object.assign({ memoized }, constants, methods);
+module.exports = Object.assign({ memoized }, constants, methods);

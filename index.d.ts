@@ -112,8 +112,6 @@ export interface IAppItemFullDetail extends IAppItem {
   reviews: number
   histogram: { '1': number, '2': number, '3': number, '4': number, '5': number }
   price: number
-  originalPrice?: number
-  discountEndDate?: string
   free: boolean
   currency: string
   priceText: string
@@ -131,10 +129,8 @@ export interface IAppItemFullDetail extends IAppItem {
   developerAddress: string
   genre: string
   genreId: string
-  categories: Array<{
-    name: string
-    id: string|null
-  }>
+  familyGenre: string
+  familyGenreId: string
   icon: string
   headerImage: string
   screenshots: string[]
@@ -148,9 +144,6 @@ export interface IAppItemFullDetail extends IAppItem {
   version: string
   recentChanges: string
   comments: string[]
-  hasEarlyAccess: boolean
-  preregister: boolean
-  isAvailableInPlayPass: boolean
 }
 
 export interface IReviewsItem {
@@ -192,7 +185,7 @@ export interface IFnAppOptions extends IOptions {
 }
 
 export interface IFnApp {
-  (options: IFnAppOptions, url: string): Promise<IAppItemFullDetail>
+  (options: IFnAppOptions): Promise<IAppItemFullDetail>
 }
 
 // -- list()
@@ -207,7 +200,7 @@ export interface IFnListOptions extends IOptions {
 }
 
 export interface IFnList {
-  <T extends IFnListOptions>(options: T): T extends { fullDetail: true } ? Promise<IAppItemFullDetail[]> : Promise<IAppItem[]>
+  (options?: IFnListOptions): Promise<IAppItem[]>
 }
 
 // -- search()
@@ -221,7 +214,7 @@ export interface IFnSearchOptions extends IOptions {
 }
 
 export interface IFnSearch {
-  <T extends IFnSearchOptions>(options: T): T extends { fullDetail: true } ? Promise<IAppItemFullDetail[]> : Promise<IAppItem[]>
+  (options: IFnSearchOptions): Promise<IAppItem[]>
 }
 
 // -- developer()
@@ -234,7 +227,7 @@ export interface IFnDeveloperOptions extends IOptions {
 }
 
 export interface IFnDeveloper {
-  <T extends IFnDeveloperOptions>(options: T): T extends { fullDetail: true } ? Promise<IAppItemFullDetail[]> : Promise<IAppItem[]>
+  (options: IFnDeveloperOptions): Promise<IAppItem[]>
 }
 
 // -- suggest()
@@ -272,7 +265,7 @@ export interface IFnSimilarOptions extends IOptions {
 }
 
 export interface IFnSimilar {
-  <T extends IFnSimilarOptions>(options: T): T extends { fullDetail: true } ? Promise<IAppItemFullDetail[]> : Promise<IAppItem[]>
+  (options: IFnReviewsOptions): Promise<IAppItem[]>
 }
 
 // -- permissions
